@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMULADOR HACKER AZUL v4.0 - Funcional 100%</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-0: #000000;
+            --dark-1: #0a0a0f;
+            --dark-2: #121220;
+            --dark-3: #1a1a2e;
+            --dark-4: #2a2a3e;
+            --blue-1: #0066ff;
+            --blue-2: #0088ff;
+            --blue-3: #00aaff;
+            --blue-glow: rgba(0, 102, 255, 0.6);
+            --cyan: #00ffff;
+            --purple: #8a2be2;
+            --gray: #a0a0c0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', 'Consolas', monospace;
+        }
+
+        body {
+            background: var(--dark-0);
+            color: #e0e0ff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de partículas no fundo */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 15, 30, 0.9);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--blue-1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 36px;
+            color: var(--blue-2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .logo-text h1 {
+            color: var(--cyan);
+            font-size: 28px;
+            text-shadow: 0 0 10px var(--blue-glow);
+        }
+
+        .logo-sub {
+            color: var(--gray);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 25px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(0, 51, 102, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 102, 255, 0.4);
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: var(--blue-2);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray);
+            text-transform: uppercase;
+        }
+
+        /* Layout Principal */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Painel de Controle */
+        .control-panel {
+            background: rgba(15, 20, 40, 0.9);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 102, 255, 0.5);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .panel-header {
+            background: linear-gradient(90deg, rgba(0, 68, 136, 0.8), rgba(0, 102, 255, 0.6));
+            padding: 20px;
+            border-bottom: 2px solid var(--blue-1);
+        }
+
+        .panel-title {
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            color: var(--cyan);
+        }
+
+        /* Formulário */
+        .form-content {
+            padding: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--cyan);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 2px solid rgba(0, 102, 255, 0.5);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px var(--blue-glow);
+            background: rgba(0, 30, 60, 0.9);
+        }
+
+        /* Métodos */
+        .methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .method-btn {
+            padding: 15px;
+            background: rgba(20, 40, 80, 0.5);
+            border: 2px solid rgba(0, 102, 255, 0.4);
+            border-radius: 8px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .method-btn:hover {
+            border-color: var(--blue-2);
+            color: var(--blue-2);
+            transform: translateY(-2px);
+        }
+
+        .method-btn.active {
+            background: rgba(0, 102, 255, 0.2);
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 10px var(--blue-glow);
+        }
+
+        /* Botões de Ação */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--blue-1), var(--blue-3));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--blue-2), var(--cyan));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--blue-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 60, 120, 0.4);
+            border: 2px solid var(--blue-1);
+            color: var(--blue-2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        /* Simulador de Senha */
+        .password-simulator {
+            background: rgba(0, 30, 60, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid rgba(0, 102, 255, 0.4);
+        }
+
+        .password-title {
+            color: var(--cyan);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .password-display {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 24px;
+            letter-spacing: 10px;
+            text-align: center;
+            margin: 20px 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .password-char {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            transition: all 0.5s;
+        }
+
+        .password-char.revealed {
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        .simulator-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .sim-btn {
+            padding: 12px 25px;
+            background: rgba(0, 102, 255, 0.3);
+            border: 1px solid var(--blue-1);
+            color: var(--blue-2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sim-btn:hover {
+            background: rgba(0, 102, 255, 0.5);
+            color: white;
+        }
+
+        /* Instagram Section */
+        .instagram-section {
+            background: linear-gradient(135deg, rgba(131, 58, 180, 0.1), rgba(225, 48, 108, 0.1));
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(225, 48, 108, 0.3);
+        }
+
+        .insta-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .insta-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .insta-btn {
+            padding: 15px;
+            background: linear-gradient(90deg, #833AB4, #E1306C);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .insta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(225, 48, 108, 0.4);
+        }
+
+        /* Console */
+        .console-panel {
+            background: rgba(10, 15, 30, 0.95);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 102, 255, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            max-height: 800px;
+        }
+
+        .console-header {
+            background: linear-gradient(90deg, rgba(0, 68, 136, 0.8), rgba(0, 102, 255, 0.6));
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--blue-1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .console-title {
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .console-controls button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.5);
+            color: var(--gray);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .console-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 700px;
+            background: rgba(0, 10, 20, 0.9);
+        }
+
+        .log-entry {
+            margin-bottom: 12px;
+            padding: 10px;
+            border-left: 4px solid;
+            background: rgba(20, 40, 80, 0.2);
+            animation: slideIn 0.3s;
+            font-size: 13px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .log-time {
+            color: var(--cyan);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .log-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .type-system { background: rgba(0, 102, 255, 0.3); color: var(--blue-2); border-left-color: var(--blue-2); }
+        .type-success { background: rgba(0, 255, 136, 0.2); color: #00ff88; border-left-color: #00ff88; }
+        .type-warning { background: rgba(255, 204, 0, 0.2); color: #ffcc00; border-left-color: #ffcc00; }
+        .type-error { background: rgba(255, 51, 102, 0.2); color: #ff3366; border-left-color: #ff3366; }
+        .type-password { background: rgba(102, 51, 255, 0.2); color: #9966ff; border-left-color: #9966ff; }
+        .type-info { background: rgba(0, 204, 255, 0.2); color: var(--cyan); border-left-color: var(--cyan); }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 12px;
+            border-top: 1px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .warning-box {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ff9999;
+            font-size: 13px;
+        }
+
+        /* Responsivo */
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .insta-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas no background -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Injection Attacks v4.0</h1>
+                        <div class="logo-sub"> VPN Ativa</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="statTests">0</div>
+                        <div class="stat-label">Testes</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statSuccess">0%</div>
+                        <div class="stat-label">Sucesso</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">ON</div>
+                        <div class="stat-label">Sistema</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Layout Principal -->
+        <div class="main-content">
+            <!-- Painel de Controle -->
+            <div class="control-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fas fa-gamepad"></i>
+                        PAINEL DE CONTROLE 
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        ATENÇÃO: USE COM MODERAÇÃO.
+                    </div>
+
+                    <!-- Input do Usuário -->
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-user-circle"></i> NOME DE USUÁRIO 
+                        </label>
+                        <input type="text" id="usernameInput" class="input-field" placeholder="Ex: @usuario ou usuario" value="@teste_simulacao" autocomplete="off">
+                    </div>
+
+                    <!-- Seleção de Método -->
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-cogs"></i> MÓDULOS
+                        </label>
+                       
+                            <div class="method-btn" data-method="bruteforce">
+                                <i class="fas fa-hammer"></i> Força Bruta
+                            </div>
+                            <div class="method-btn" data-method="session">
+                                <i class="fas fa-cookie-bite"></i> Sessão Cookies
+                            </div>
+                          
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="startBtn">
+                            <i class="fas fa-play"></i> INICIAR
+                        </button>
+                        <button class="btn btn-secondary" id="resetBtn">
+                            <i class="fas fa-sync-alt"></i> REINICIAR
+                        </button>
+                    </div>
+
+            <!-- Console de Logs -->
+            <div class="console-panel">
+                <div class="console-header">
+                    <div class="console-title">
+                        <i class="fas fa-code"></i> CONSOLE DE LOGS EM TEMPO REAL
+                    </div>
+                    <div class="console-controls">
+                        <button id="clearLogsBtn">
+                            <i class="fas fa-trash"></i> Limpar
+                        </button>
+                        <button id="exportLogsBtn">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+                <div class="console-content" id="consoleLogs">
+                    <!-- Logs aparecerão aqui -->
+                    <div class="log-entry type-system">
+                        <span class="log-time">[00:00:00]</span>
+                        <span class="log-type type-system">SISTEMA</span>
+                        <span> v4.0 inicializado</span>
+                    </div>
+                    <div class="log-entry type-info">
+                        <span class="log-time">[00:00:01]</span>
+                        <span class="log-type type-info">INFO</span>
+                        <span>Pronto para ATTACK. Insira dados e clique em INICIAR.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                    <!-- Simulador de Senha -->
+                    <div class="password-simulator">
+                        <div class="password-title">
+                            <i class="fas fa-key"></i> MÓDULO QUEBRA DE SENHA
+                        </div>
+                        <div class="password-display" id="passwordDisplay">
+                            <!-- Senha será mostrada aqui -->
+                        </div>
+                        <div class="simulator-controls">
+                            <button class="sim-btn" id="crackBtn">
+                                <i class="fas fa-bolt"></i> INICIAR QUEBRA
+                            </button>
+                            <button class="sim-btn" id="revealBtn">
+                                <i class="fas fa-eye"></i> REVELAR SENHA
+                            </button>
+                            <button class="sim-btn" id="newPassBtn">
+                                <i class="fas fa-random"></i> NOVA SENHA
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Instagram Integration -->
+                    <div class="instagram-section">
+                        <div class="insta-header">
+                            <i class="fab fa-instagram"></i>
+                            <h3>INTEGRAÇÃO COM INSTAGRAM</h3>
+                        </div>
+                        <div class="insta-buttons">
+                            <button class="insta-btn" id="openProfileBtn">
+                                <i class="fab fa-instagram"></i> Abrir Perfil
+                            </button>
+                            <button class="insta-btn" id="openHomeBtn">
+                                <i class="fas fa-home"></i> Página Inicial
+                            </button>
+                        </div>
+                        <p style="color: #cc99ff; font-size: 12px; margin-top: 10px;">
+                            <i class="fas fa-info-circle"></i> Abre o Instagram real para verificação
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>⚠️ Desenvolvido para fins de estudo em segurança digital</p>
+            <p>© 2026 HackeR - Versão 4.0 (100% Funcional)</p>
+        </div>
+    </div>
+
+    <!-- Script das Partículas -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // ========== SISTEMA DE SIMULAÇÃO 100% FUNCIONAL ==========
+        
+        // Configuração das partículas
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#0066ff" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#0088ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: { enable: true, speed: 2 }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+        
+        // Variáveis do sistema
+        let simulationActive = false;
+        let currentMethod = 'phishing';
+        let testCount = 0;
+        let successCount = 0;
+        let password = 'S3gur@123';
+        let passwordRevealed = false;
+        
+        // Elementos DOM
+        const usernameInput = document.getElementById('usernameInput');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const crackBtn = document.getElementById('crackBtn');
+        const revealBtn = document.getElementById('revealBtn');
+        const newPassBtn = document.getElementById('newPassBtn');
+        const openProfileBtn = document.getElementById('openProfileBtn');
+        const openHomeBtn = document.getElementById('openHomeBtn');
+        const clearLogsBtn = document.getElementById('clearLogsBtn');
+        const exportLogsBtn = document.getElementById('exportLogsBtn');
+        const consoleLogs = document.getElementById('consoleLogs');
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const statTests = document.getElementById('statTests');
+        const statSuccess = document.getElementById('statSuccess');
+        
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focar no input
+            usernameInput.focus();
+            
+            // Atualizar display da senha
+            updatePasswordDisplay();
+            
+            // Adicionar logs iniciais
+            addLog('Sistema carregado com sucesso', 'system');
+            addLog('Aguardando comando para iniciar ATTACK', 'info');
+        });
+        
+        // ========== SELEÇÃO DE MÉTODO ==========
+        document.querySelectorAll('.method-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remover classe active de todos
+                document.querySelectorAll('.method-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Adicionar ao clicado
+                this.classList.add('active');
+                currentMethod = this.dataset.method;
+                
+                addLog(`Método alterado para: ${getMethodName(currentMethod)}`, 'info');
+            });
+        });
+        
+        function getMethodName(method) {
+            const names = {
+                'phishing': 'Simulação de Phishing',
+                'bruteforce': 'Ataque de Força Bruta',
+                'session': 'Hijacking de Sessão',
+                'social': 'Engenharia Social'
+            };
+            return names[method] || method;
+        }
+        
+        // ========== SISTEMA DE LOGS ==========
+        function addLog(message, type = 'info') {
+            const now = new Date();
+            const timeStr = `[${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}]`;
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry type-${type}`;
+            logEntry.innerHTML = `
+                <span class="log-time">${timeStr}</span>
+                <span class="log-type type-${type}">${type.toUpperCase()}</span>
+                <span>${message}</span>
+            `;
+            
+            consoleLogs.appendChild(logEntry);
+            
+            // Scroll automático
+            consoleLogs.scrollTop = consoleLogs.scrollHeight;
+            
+            // Limitar logs
+            const logs = consoleLogs.querySelectorAll('.log-entry');
+            if (logs.length > 100) {
+                logs[0].remove();
+            }
+        }
+        
+        // ========== SIMULAÇÃO PRINCIPAL ==========
+        startBtn.addEventListener('click', function() {
+            if (simulationActive) {
+                addLog('ATTACK já está em andamento', 'warning');
+                return;
+            }
+            
+            const username = usernameInput.value.trim();
+            if (!username) {
+                addLog('Erro: Insira um nome de usuário primeiro', 'error');
+                usernameInput.focus();
+                return;
+            }
+            
+            simulationActive = true;
+            testCount++;
+            statTests.textContent = testCount;
+            
+            const cleanUser = username.replace('@', '');
+            
+            addLog(`=== INICIANDO ATTACK ===`, 'system');
+            addLog(`Alvo: ${cleanUser}`, 'info');
+            addLog(`Método: ${getMethodName(currentMethod)}`, 'info');
+            
+            // Desabilitar botão durante simulação
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SIMULANDO...';
+            
+            // Simulação baseada no método
+            switch(currentMethod) {
+                case 'phishing':
+                    simulatePhishing(cleanUser);
+                    break;
+                case 'bruteforce':
+                    simulateBruteForce(cleanUser);
+                    break;
+                case 'session':
+                    simulateSession(cleanUser);
+                    break;
+                case 'social':
+                    simulateSocial(cleanUser);
+                    break;
+            }
+        });
+        
+        // ========== MÉTODOS DE SIMULAÇÃO ==========
+        function simulatePhishing(username) {
+            addLog('Passo 1/5: Criando página de phishing falsa...', 'info');
+            
+            setTimeout(() => {
+                addLog('Página falsa criada: https://insta-seguranca-login.com', 'warning');
+                addLog('Passo 2/5: Disfarçando URL com encurtador...', 'info');
+                
+                setTimeout(() => {
+                    addLog('URL encurtada: bit.ly/insta-login-safe', 'warning');
+                    addLog('Passo 3/5: Enviando para vítima...', 'info');
+                    
+                    setTimeout(() => {
+                        const clicked = Math.random() > 0.4;
+                        if (clicked) {
+                            addLog('Vítima clicou no link!', 'password');
+                            addLog('Passo 4/5: Coletando credenciais...', 'info');
+                            
+                            setTimeout(() => {
+                                successCount++;
+                                updateSuccessRate();
+                                addLog('CREDENCIAIS CAPTURADAS :', 'password');
+                                addLog(`Usuário: ${username}`, 'password');
+                                addLog('Senha: •••••••••', 'password');
+                                addLog('Passo 5/5: Limpando rastros...', 'info');
+                                finishSimulation(true);
+                            }, 1500);
+                        } else {
+                            addLog('Vítima não clicou no link', 'warning');
+                            finishSimulation(false);
+                        }
+                    }, 1200);
+                }, 1000);
+            }, 800);
+        }
+        
+        function simulateBruteForce(username) {
+            addLog('Passo 1/5: Coletando informações públicas...', 'info');
+            
+            setTimeout(() => {
+                addLog(`Encontrado: ${username} tem 5,243 seguidores`, 'info');
+                addLog('Passo 2/5: Gerando lista de senhas prováveis...', 'info');
+                
+                setTimeout(() => {
+                    const commonPasswords = [
+                        `${username}******`, '******', '******', '******', 
+                        `${username}******`, '******', '******', '******'
+                    ];
+                    
+                    addLog(`Lista gerada: ${commonPasswords.length} senhas`, 'info');
+                    addLog('Passo 3/5: Iniciando tentativas...', 'info');
+                    
+                    let attempt = 0;
+                    const tryPasswords = setInterval(() => {
+                        attempt++;
+                        const trying = commonPasswords[attempt - 1];
+                        
+                        addLog(`Tentativa ${attempt}: "${trying}"`, 'info');
+                        
+                        if (attempt >= 5) {
+                            clearInterval(tryPasswords);
+                            addLog('Passo 4/5: Senha encontrada!', 'password');
+                            addLog(`SENHA: "${commonPasswords[4]}"`, 'password');
+                            
+                            setTimeout(() => {
+                                successCount++;
+                                updateSuccessRate();
+                                addLog('Passo 5/5: Acesso concedido', 'success');
+                                finishSimulation(true);
+                            }, 1000);
+                        }
+                    }, 800);
+                }, 1000);
+            }, 800);
+        }
+        
+        function simulateSession(username) {
+            addLog('Passo 1/5: Monitorando tráfego de rede...', 'info');
+            
+            setTimeout(() => {
+                addLog('Conexão HTTP detectada (não segura)', 'warning');
+                addLog('Passo 2/5: Capturando cookies...', 'info');
+                
+                setTimeout(() => {
+                    addLog('Cookie de sessão interceptado', 'password');
+                    addLog('Passo 3/5: Decodificando token...', 'info');
+                    
+                    setTimeout(() => {
+                        const fakeToken = 'ig_' + Math.random().toString(36).substring(2, 15);
+                        addLog(`Token: ${fakeToken}`, 'password');
+                        addLog('Passo 4/5: Clonando sessão...', 'info');
+                        
+                        setTimeout(() => {
+                            successCount++;
+                            updateSuccessRate();
+                            addLog('Sessão clonada com sucesso!', 'success');
+                            addLog('Passo 5/5: Acesso total obtido', 'success');
+                            finishSimulation(true);
+                        }, 1200);
+                    }, 1000);
+                }, 800);
+            }, 800);
+        }
+        
+        function simulateSocial(username) {
+            addLog('Passo 1/5: Analisando perfil social...', 'info');
+            
+            setTimeout(() => {
+                addLog('Encontrado: Aniversário em 15/07, animal: cachorro', 'info');
+                addLog('Passo 2/5: Criando perfil falso...', 'info');
+                
+                setTimeout(() => {
+                    addLog('Perfil falso criado: "Amiga da Faculdade"', 'warning');
+                    addLog('Passo 3/5: Enviando solicitação...', 'info');
+                    
+                    setTimeout(() => {
+                        const accepted = Math.random() > 0.3;
+                        if (accepted) {
+                            addLog('Solicitação aceita!', 'password');
+                            addLog('Passo 4/5: Construindo confiança...', 'info');
+                            
+                            setTimeout(() => {
+                                addLog('Vítima compartilhou informações pessoais', 'password');
+                                addLog('Passo 5/5: Coletando dados sensíveis...', 'info');
+                                
+                                successCount++;
+                                updateSuccessRate();
+                                setTimeout(() => {
+                                    addLog('DADOS COLETADOS:', 'password');
+                                    addLog('E-mail: ' + username + '@gmail.com', 'password');
+                                    addLog('Telefone: (11) 9****-****', 'password');
+                                    addLog('ATTACK CONCLUÍDO COM SUCESSO', 'success');
+                                    finishSimulation(true);
+                                }, 1000);
+                            }, 1200);
+                        } else {
+                            addLog('Solicitação rejeitada', 'warning');
+                            finishSimulation(false);
+                        }
+                    }, 1000);
+                }, 800);
+            }, 800);
+        }
+        
+        function finishSimulation(success) {
+            setTimeout(() => {
+                simulationActive = false;
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fas fa-play"></i> INICIAR ATTACK';
+                
+                if (success) {
+                    addLog('=== ATTACK CONCLUÍDA: SUCESSO ===', 'success');
+                } else {
+                    addLog('=== ATTACK CONCLUÍDA: FALHA ===', 'warning');
+                }
+                
+                addLog('Pronto para novo ATTACK', 'info');
+            }, 1000);
+        }
+        
+        function updateSuccessRate() {
+            const rate = Math.round((successCount / testCount) * 100);
+            statSuccess.textContent = rate + '%';
+        }
+        
+        // ========== SIMULADOR DE SENHA ==========
+        function updatePasswordDisplay() {
+            passwordDisplay.innerHTML = '';
+            
+            for (let i = 0; i < password.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'password-char';
+                charSpan.textContent = passwordRevealed ? password[i] : '•';
+                if (passwordRevealed) {
+                    charSpan.classList.add('revealed');
+                }
+                passwordDisplay.appendChild(charSpan);
+            }
+        }
+        
+        crackBtn.addEventListener('click', function() {
+            if (passwordRevealed) {
+                addLog('Senha já foi revelada', 'warning');
+                return;
+            }
+            
+            addLog('Iniciando ATTACK de quebra de senha...', 'info');
+            crackBtn.disabled = true;
+            crackBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> QUEBRANDO...';
+            
+            let revealedIndex = 0;
+            const crackInterval = setInterval(() => {
+                // Revelar um caractere por vez
+                const chars = passwordDisplay.querySelectorAll('.password-char');
+                if (revealedIndex < chars.length) {
+                    chars[revealedIndex].textContent = password[revealedIndex];
+                    chars[revealedIndex].classList.add('revealed');
+                    revealedIndex++;
+                    
+                    addLog(`Caractere ${revealedIndex}/${password.length} revelado`, 'password');
+                }
+                
+                // Quando completa
+                if (revealedIndex >= chars.length) {
+                    clearInterval(crackInterval);
+                    passwordRevealed = true;
+                    crackBtn.disabled = false;
+                    crackBtn.innerHTML = '<i class="fas fa-bolt"></i> INICIAR QUEBRA';
+                    addLog(`SENHA COMPLETA REVELADA: ${password}`, 'success');
+                }
+            }, 500);
+        });
+        
+        revealBtn.addEventListener('click', function() {
+            passwordRevealed = true;
+            updatePasswordDisplay();
+            addLog(`Senha revelada: ${password}`, 'password');
+        });
+        
+        newPassBtn.addEventListener('click', function() {
+            const newPasswords = [
+                'M3uN0v0@2024', 'S3nh@F0rt3!', 'C0d1g0#S3gur0',
+                'Blu3H@ck3r', 'P@ssw0rd123', 'Inst@2024!'
+            ];
+            password = newPasswords[Math.floor(Math.random() * newPasswords.length)];
+            passwordRevealed = false;
+            updatePasswordDisplay();
+            addLog(`Nova senha gerada: ${password.replace(/./g, '•')}`, 'info');
+        });
+        
+        // ========== INSTAGRAM INTEGRATION ==========
+        openProfileBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim() || 'instagram';
+            const cleanUser = username.replace('@', '');
+            
+            addLog(`Abrindo perfil do Instagram: ${cleanUser}`, 'info');
+            
+            // Tenta abrir app primeiro
+            window.location.href = `instagram://user?username=${cleanUser}`;
+            
+            // Fallback para web
+            setTimeout(() => {
+                window.open(`https://instagram.com/${cleanUser}`, '_blank');
+            }, 300);
+        });
+        
+        openHomeBtn.addEventListener('click', function() {
+            addLog('Abrindo página inicial do Instagram', 'info');
+            
+            // Tenta abrir app
+            window.location.href = 'instagram://';
+            
+            // Fallback para web
+            setTimeout(() => {
+                window.open('https://instagram.com', '_blank');
+            }, 300);
+        });
+        
+        // ========== CONTROLES DO CONSOLE ==========
+        clearLogsBtn.addEventListener('click', function() {
+            consoleLogs.innerHTML = '';
+            addLog('Logs limpos. Sistema pronto.', 'system');
+        });
+        
+        exportLogsBtn.addEventListener('click', function() {
+            const logsText = Array.from(consoleLogs.querySelectorAll('.log-entry'))
+                .map(log => log.textContent)
+                .join('\n');
+            
+            const blob = new Blob([logsText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `simulador_logs_${new Date().toISOString().slice(0,10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            addLog('Logs exportados para arquivo TXT', 'success');
+        });
+        
+        // ========== REINICIAR SISTEMA ==========
+        resetBtn.addEventListener('click', function() {
+            simulationActive = false;
+            usernameInput.value = '@teste_simulacao';
+            passwordRevealed = false;
+            
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> INICIAR ';
+            crackBtn.disabled = false;
+            crackBtn.innerHTML = '<i class="fas fa-bolt"></i> INICIAR QUEBRA';
+            
+            updatePasswordDisplay();
+            addLog('Sistema reiniciado. Pronto para nova ATTACK.', 'system');
+        });
+        
+        // ========== ATALHOS DE TECLADO ==========
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter = Iniciar simulação
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                startBtn.click();
+            }
+            
+            // Ctrl+L = Limpar logs
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                clearLogsBtn.click();
+            }
+            
+            // Ctrl+R = Resetar
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                resetBtn.click();
+            }
+        });
+        
+        // Atualizar display inicial
+        updatePasswordDisplay();
+        
+    </script>
+</body>
+</html>
