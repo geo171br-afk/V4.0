@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Messages Updater</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <h1>📱 <span class="blink">System Messages Updater</span></h1>
+        <p class="subtitle">Gerador de notificações de sistema</p>
+        
+        <div class="card">
+            <h2>🎯 1. Selecionar App Fake</h2>
+            <select id="appSelector" class="select">
+                <option value="whatsapp">WhatsApp</option>
+                <option value="instagram">Instagram</option>
+                <option value="tinder">Tinder</option>
+                <option value="nubank">Nubank</option>
+                <option value="picpay">PicPay</option>
+                <option value="telegram">Telegram</option>
+                <option value="custom">Personalizado</option>
+            </select>
+            
+            <div id="customApp" style="display:none; margin-top:15px;">
+                <input type="text" id="customName" placeholder="Nome do app" class="input">
+                <input type="text" id="customIcon" placeholder="🔤 Emoji como ícone" class="input">
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>✏️ 2. Personalizar Notificação</h2>
+            <input type="text" id="notifTitle" placeholder="Título da notificação" class="input" value="Mensagem nova">
+            <textarea id="notifBody" placeholder="Corpo da mensagem" class="textarea">Clique para visualizar</textarea>
+            <input type="number" id="notifCount" min="1" max="100" value="10" class="input-small">
+            <label> quantidade (máx: 100)</label>
+        </div>
+        
+        <div class="card">
+            <h2>⚙️ 3. Configurações</h2>
+            <label class="switch">
+                <input type="checkbox" id="autoClose">
+                <span class="slider"></span>
+                <span class="label">Fechar notificação automaticamente</span>
+            </label>
+            <br>
+            <label class="switch">
+                <input type="checkbox" id="randomTime">
+                <span class="slider"></span>
+                <span class="label">Intervalo aleatório (5-30s)</span>
+            </label>
+            <br>
+            <label class="switch">
+                <input type="checkbox" id="soundEnable" checked>
+                <span class="slider"></span>
+                <span class="label">Som de notificação</span>
+            </label>
+        </div>
+        
+        <div class="button-group">
+            <button id="testBtn" class="btn btn-test">🔔 Testar 1 Notificação</button>
+            <button id="startBtn" class="btn btn-start">🚀 Iniciar Bombardeio</button>
+            <button id="stopBtn" class="btn btn-stop">⏹️ Parar Tudo</button>
+        </div>
+        
+        <div class="status" id="status">Pronto para começar...</div>
+        
+        <div class="tips">
+            <p><strong>💡 Dica do Zé:</strong> Instale como PWA (Adicionar à tela inicial) para funcionar melhor!</p>
+            <p><strong>⚠️ Aviso:</strong> Permita notificações quando o navegador solicitar.</p>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
